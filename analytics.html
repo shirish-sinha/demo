@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Provider Rescue Analytics & Impact – SurplusLink</title>
+  <meta name="description" content="Real-time metrics on surplus food listed, rescued, efficiency rates, and ecological impact.">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .a-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 24px;
+      align-items: start;
+    }
+    .a-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .metric-4col {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .m-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .chart-bar-wrap {
+      display: flex;
+      height: 24px;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-top: 8px;
+      margin-bottom: 14px;
+    }
+    .bar-dark {
+      background: #0F172A;
+      color: #FFFFFF;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      padding-left: 8px;
+    }
+    .bar-amber {
+      background: #FDBA74;
+      color: #7C2D12;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .heatmap-grid {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 6px;
+    }
+    .heatmap-grid th {
+      font-size: 12px;
+      font-weight: 700;
+      color: #64748B;
+      text-align: center;
+      padding: 4px;
+    }
+    .heatmap-grid td {
+      border-radius: 6px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 10px 4px;
+    }
+    .h-low { background: #E8F5EF; color: #065F46; }
+    .h-med { background: #A7F3D0; color: #065F46; }
+    .h-high { background: #34D399; color: #064E3B; }
+    .h-peak { background: #0F172A; color: #FFFFFF; }
+    .an-radio {
+      display: none;
+    }
+    .date-pill-btn {
+      background: transparent;
+      border: none;
+      padding: 5px 12px;
+      font-weight: 600;
+      color: #64748B;
+      cursor: pointer;
+      border-radius: 6px;
+      font-size: 12px;
+      transition: all 0.15s ease;
+      user-select: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .an-radio:checked + .date-pill-btn {
+      background: #FFFFFF;
+      border: 1px solid var(--color-border);
+      font-weight: 800;
+      color: #0F172A;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .cat-pill-btn {
+      border: 1px solid var(--color-border);
+      background: #FFF;
+      color: #334155;
+      font-size: 12px;
+      border-radius: 20px;
+      padding: 6px 14px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      user-select: none;
+      display: inline-block;
+    }
+    .an-radio:checked + .cat-pill-btn {
+      border-color: var(--color-primary);
+      background: #E8F5EF;
+      color: var(--color-primary);
+      font-weight: 700;
+    }
+    @media (max-width: 1024px) {
+      .metric-4col {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .a-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (max-width: 600px) {
+      .metric-4col {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body style="background-color: var(--color-background);">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="explore.html" class="nav-logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="var(--color-primary)"/>
+        <path d="M2 17L12 22L22 17" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M2 12L12 17L22 12" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      SurplusLink
+    </a>
+    <div class="nav-links">
+      <a href="explore.html">Explore food</a>
+      <a href="reservation.html">My collections</a>
+      <a href="analytics.html" class="active">Our impact</a>
+    </div>
+    <div class="nav-actions">
+      <a href="create-listing.html" class="btn btn-primary btn-sm">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        Share surplus
+      </a>
+      <a href="notifications.html" class="nav-icon-btn" title="Notifications">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+        <span class="unread-dot"></span>
+      </a>
+      <a href="profile.html" class="nav-avatar" title="View Profile">AM</a>
+    </div>
+  </nav>
+
+  <!-- Sub-nav Breadcrumbs & Date Filter -->
+  <div style="background: #FFFFFF; border-bottom: 1px solid var(--color-border); padding: 12px 24px;">
+    <div class="container" style="padding: 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+      <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; flex-wrap: wrap;">
+        <a href="explore.html" style="color: var(--color-primary); font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 4px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          Provider Hub
+        </a>
+        <span style="color: var(--color-muted);">/</span>
+        <span style="color: var(--color-muted);">Operations & Insights</span>
+        <span style="color: var(--color-muted);">/</span>
+        <span style="font-weight: 700; color: #0F172A;">Provider Analytics</span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+        <div style="display: inline-flex; border: 1px solid var(--color-border); border-radius: 8px; padding: 2px; background: #F8FAFC; font-size: 12px;">
+          <input type="radio" name="an_range" id="range-7d" class="an-radio">
+          <label for="range-7d" class="date-pill-btn">Last 7 Days</label>
+          <input type="radio" name="an_range" id="range-30d" class="an-radio" checked>
+          <label for="range-30d" class="date-pill-btn">Last 30 Days</label>
+          <input type="radio" name="an_range" id="range-quarter" class="an-radio">
+          <label for="range-quarter" class="date-pill-btn">This Quarter</label>
+          <input type="radio" name="an_range" id="range-custom" class="an-radio">
+          <label for="range-custom" class="date-pill-btn">
+            Custom Range
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          </label>
+        </div>
+        <button class="btn btn-outline btn-sm" style="border-color: var(--color-border); font-size: 12px; font-weight: 700; color: #0F172A; background: #FFF;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          Export Report
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <main class="container" style="padding-top: 24px; padding-bottom: 80px;">
+
+    <!-- Title & Controls Header -->
+    <div class="flex justify-between items-start flex-wrap gap-4 mb-4">
+      <div>
+        <div class="flex items-center gap-2 mb-1">
+          <span class="badge" style="background: #E8F5EF; color: #065F46; border: 1px solid #A7F3D0; font-weight: 700; font-size: 11px;">● Tier 1 Verified Kitchen</span>
+          <span style="font-size: 12px; color: #64748B;">🕒 Data synced 5m ago</span>
+        </div>
+        <h1 style="margin: 0 0 4px 0; font-size: 26px; font-weight: 800; color: #0F172A;">Provider Rescue Analytics & Impact</h1>
+        <p class="text-muted" style="margin: 0; font-size: 13.5px;">
+          Real-time metrics on surplus food listed, rescued, and diverted to community partners for <strong>The Green Kitchen</strong>.
+        </p>
+      </div>
+
+      <div class="flex gap-2">
+        <button class="btn btn-outline btn-sm" style="border-color: var(--color-border); color: #0F172A; font-weight: 700; background: #FFF;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+          Filter Parameters
+        </button>
+        <button class="btn btn-outline btn-sm" style="border-color: var(--color-border); color: #0F172A; padding: 8px 10px; background: #FFF;" title="Print">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- 4 Metric Cards -->
+    <div class="metric-4col">
+      <!-- 1: Meals Rescued -->
+      <div class="m-card">
+        <div>
+          <div class="flex justify-between items-center text-muted mb-2" style="font-size: 12px; font-weight: 700;">
+            Meals Rescued
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"></path></svg>
+          </div>
+          <div class="flex items-baseline gap-2 mb-2">
+            <span style="font-size: 28px; font-weight: 800; color: #0F172A;">1,284</span>
+            <span class="badge" style="background: #E8F5EF; color: #065F46; font-size: 11px; font-weight: 800;">↗ +18.6%</span>
+          </div>
+          <!-- Mini SVG Sparkline -->
+          <svg width="100%" height="24" viewBox="0 0 100 24" fill="none" style="margin-bottom: 6px;">
+            <path d="M0 20 L25 18 L50 14 L75 10 L100 4" stroke="#0F172A" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="100" cy="4" r="3" fill="#0F172A"/>
+          </svg>
+        </div>
+        <div class="text-muted" style="font-size: 11.5px;">Redirected directly to local shelters</div>
+      </div>
+
+      <!-- 2: Rescue Efficiency Rate -->
+      <div class="m-card">
+        <div>
+          <div class="flex justify-between items-center text-muted mb-2" style="font-size: 12px; font-weight: 700;">
+            Rescue Efficiency Rate
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+          </div>
+          <div class="flex items-baseline gap-2 mb-2">
+            <span style="font-size: 28px; font-weight: 800; color: #0F172A;">86.4%</span>
+            <span class="badge" style="background: #E8F5EF; color: #065F46; font-size: 11px; font-weight: 800;">↗ +3.2%</span>
+          </div>
+          <div style="background: #F1F5F9; border-radius: 4px; height: 6px; overflow: hidden; margin-bottom: 6px;">
+            <div style="background: #0F172A; width: 86.4%; height: 100%;"></div>
+          </div>
+          <div class="flex justify-between" style="font-size: 10.5px; color: #64748B; font-weight: 600;">
+            <span>Target: > 85%</span>
+            <span style="color: #065F46;">Exceeding goal</span>
+          </div>
+        </div>
+        <div class="text-muted" style="font-size: 11.5px; margin-top: 6px;">Industry benchmark: 72%</div>
+      </div>
+
+      <!-- 3: Total Food Listed -->
+      <div class="m-card">
+        <div>
+          <div class="flex justify-between items-center text-muted mb-2" style="font-size: 12px; font-weight: 700;">
+            Total Food Listed
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+          </div>
+          <div class="flex items-baseline gap-2 mb-2">
+            <span style="font-size: 28px; font-weight: 800; color: #0F172A;">1,480 <span style="font-size: 16px; font-weight: 700;">kg</span></span>
+            <span style="font-size: 11.5px; color: #64748B; font-weight: 700;">+120 kg</span>
+          </div>
+          <!-- Sparkline -->
+          <svg width="100%" height="24" viewBox="0 0 100 24" fill="none" style="margin-bottom: 6px;">
+            <path d="M0 18 L30 16 L60 12 L100 6" stroke="#0D9488" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="100" cy="6" r="3" fill="#0D9488"/>
+          </svg>
+        </div>
+        <div class="text-muted" style="font-size: 11.5px;">Across 64 surplus batches</div>
+      </div>
+
+      <!-- 4: Unclaimed / Expired -->
+      <div class="m-card">
+        <div>
+          <div class="flex justify-between items-center text-muted mb-2" style="font-size: 12px; font-weight: 700;">
+            Unclaimed / Expired
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+          </div>
+          <div class="flex items-baseline gap-2 mb-2">
+            <span style="font-size: 28px; font-weight: 800; color: #0F172A;">92 <span style="font-size: 16px; font-weight: 700;">kg</span></span>
+            <span class="text-muted" style="font-size: 12px; font-weight: 600;">(6.2%)</span>
+          </div>
+          <span class="badge" style="background: #FFF7ED; color: #C2410C; border: 1px solid #FED7AA; font-size: 11px; font-weight: 700; margin-bottom: 8px;">
+            ● Within safe threshold (< 8%)
+          </span>
+        </div>
+        <div class="text-muted" style="font-size: 11.5px;">Safely composted via municipal stream</div>
+      </div>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="a-layout">
+      
+      <!-- Left Column -->
+      <div class="left-col">
+        
+        <!-- Surplus Breakdown: Listed vs Rescued -->
+        <div class="a-card">
+          <div class="flex justify-between items-start flex-wrap gap-2 mb-2">
+            <div>
+              <h2 style="margin: 0 0 2px 0; font-size: 18px; font-weight: 800; color: #0F172A;">Surplus Breakdown: Listed vs. Rescued</h2>
+              <div class="text-muted" style="font-size: 12.5px;">Weekly mass tracking by operational outcome (kg)</div>
+            </div>
+            <div class="flex items-center gap-3" style="font-size: 12px; font-weight: 700;">
+              <span class="flex items-center gap-1.5"><span style="display:inline-block;width:10px;height:10px;background:#0F172A;border-radius:2px;"></span> Food Rescued (kg)</span>
+              <span class="flex items-center gap-1.5"><span style="display:inline-block;width:10px;height:10px;background:#FDBA74;border-radius:2px;"></span> Unclaimed / Composted</span>
+            </div>
+          </div>
+
+          <!-- Highlight Banner -->
+          <div style="background: #F4FBF8; border: 1px solid #A7F3D0; border-radius: 8px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; margin: 16px 0; font-size: 12px;">
+            <div class="flex items-center gap-2" style="font-weight: 700; color: #065F46;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              Peak rescue efficiency achieved in Week 3 (91.2% claimed)
+            </div>
+            <span style="color: #047857; font-weight: 600;">Zero landfill diversion</span>
+          </div>
+
+          <!-- 4 Bars -->
+          <div>
+            <!-- Week 1 -->
+            <div>
+              <div class="flex justify-between text-muted" style="font-size: 12px; font-weight: 600;">
+                <span style="color: #0F172A; font-weight: 700;">Week 1 (Oct 1 - Oct 7)</span>
+                <span>340 kg total • <strong>290 kg rescued (85.2%)</strong></span>
+              </div>
+              <div class="chart-bar-wrap">
+                <div class="bar-dark" style="width: 85.2%;">290 kg</div>
+                <div class="bar-amber" style="width: 14.8%;">50 kg</div>
+              </div>
+            </div>
+
+            <!-- Week 2 -->
+            <div>
+              <div class="flex justify-between text-muted" style="font-size: 12px; font-weight: 600;">
+                <span style="color: #0F172A; font-weight: 700;">Week 2 (Oct 8 - Oct 14)</span>
+                <span>390 kg total • <strong>338 kg rescued (86.6%)</strong></span>
+              </div>
+              <div class="chart-bar-wrap">
+                <div class="bar-dark" style="width: 86.6%;">338 kg</div>
+                <div class="bar-amber" style="width: 13.4%;">52 kg</div>
+              </div>
+            </div>
+
+            <!-- Week 3 -->
+            <div>
+              <div class="flex justify-between text-muted" style="font-size: 12px; font-weight: 600;">
+                <span style="color: #0F172A; font-weight: 700;">Week 3 (Oct 15 - Oct 21) ★</span>
+                <span>420 kg total • <strong>383 kg rescued (91.2%)</strong></span>
+              </div>
+              <div class="chart-bar-wrap">
+                <div class="bar-dark" style="width: 91.2%;">383 kg</div>
+                <div class="bar-amber" style="width: 8.8%;">37 kg</div>
+              </div>
+            </div>
+
+            <!-- Week 4 -->
+            <div>
+              <div class="flex justify-between text-muted" style="font-size: 12px; font-weight: 600;">
+                <span style="color: #0F172A; font-weight: 700;">Week 4 (Oct 22 - Oct 28)</span>
+                <span>330 kg total • <strong>273 kg rescued (82.7%)</strong></span>
+              </div>
+              <div class="chart-bar-wrap">
+                <div class="bar-dark" style="width: 82.7%;">273 kg</div>
+                <div class="bar-amber" style="width: 17.3%;">57 kg</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Meals Saved Over Time -->
+        <div class="a-card">
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <h2 style="margin: 0 0 2px 0; font-size: 18px; font-weight: 800; color: #0F172A;">Meals Saved Over Time</h2>
+              <div class="text-muted" style="font-size: 12.5px;">Cumulative monthly volume progression since verified onboarding</div>
+            </div>
+            <span class="badge" style="background: #E8F5EF; color: #065F46; font-size: 11px; font-weight: 800;">
+              +88.8% growth over 6 months
+            </span>
+          </div>
+
+          <!-- Area chart mockup -->
+          <div style="position: relative; background: #F8FAFC; border: 1px solid var(--color-border); border-radius: 8px; padding: 24px 16px 12px 16px; margin-bottom: 8px;">
+            <!-- Callout badges -->
+            <div style="position: absolute; top: 18px; left: 35%; background: #FFFFFF; border: 1px solid var(--color-border); border-radius: 6px; padding: 4px 8px; font-size: 10.5px; font-weight: 700; color: #0F172A; display: flex; align-items: center; gap: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle></svg>
+              Eastside Shelter onboarding
+            </div>
+
+            <div style="position: absolute; top: 38px; right: 18%; background: #FFFFFF; border: 1px solid var(--color-border); border-radius: 6px; padding: 4px 8px; font-size: 10.5px; font-weight: 700; color: #0F172A; display: flex; align-items: center; gap: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
+              ⚡ Automated hold window enabled
+            </div>
+
+            <svg viewBox="0 0 500 120" style="width: 100%; height: 120px; overflow: visible;">
+              <defs>
+                <linearGradient id="chartGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#34D399" stop-opacity="0.4"/>
+                  <stop offset="100%" stop-color="#34D399" stop-opacity="0.02"/>
+                </linearGradient>
+              </defs>
+              <path d="M 0 100 Q 100 90, 160 80 T 320 50 T 500 15 L 500 120 L 0 120 Z" fill="url(#chartGrad)"/>
+              <path d="M 0 100 Q 100 90, 160 80 T 320 50 T 500 15" fill="none" stroke="#0F172A" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="160" cy="80" r="4" fill="#0F172A"/>
+              <circle cx="380" cy="40" r="4" fill="#0F172A"/>
+              <circle cx="500" cy="15" r="4" fill="#0F172A"/>
+            </svg>
+
+            <div class="flex justify-between text-muted" style="font-size: 11px; font-weight: 600; margin-top: 8px;">
+              <span>May (680)</span>
+              <span>Jun (740)</span>
+              <span>Jul (890)</span>
+              <span>Aug (980)</span>
+              <span>Sep (1,120)</span>
+              <strong style="color: #0F172A;">Oct (1,284)</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Peak Surplus & Pickup Distribution (Heatmap) -->
+        <div class="a-card">
+          <div class="flex justify-between items-start mb-3">
+            <div>
+              <h2 style="margin: 0 0 2px 0; font-size: 18px; font-weight: 800; color: #0F172A;">Peak Surplus & Pickup Distribution</h2>
+              <div class="text-muted" style="font-size: 12.5px;">Density of surplus batch declarations by day and time window</div>
+            </div>
+            <div class="flex items-center gap-1.5" style="font-size: 11px; font-weight: 700; color: #64748B;">
+              <span>Low</span>
+              <span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#E8F5EF;"></span>
+              <span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#A7F3D0;"></span>
+              <span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#34D399;"></span>
+              <span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#0F172A;"></span>
+              <span>Peak</span>
+            </div>
+          </div>
+
+          <table class="heatmap-grid mb-3">
+            <thead>
+              <tr>
+                <th style="text-align: left; width: 110px;">Time</th>
+                <th>Mon</th>
+                <th>Tue</th>
+                <th>Wed</th>
+                <th>Thu</th>
+                <th>Fri</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-size: 11.5px; font-weight: 600; color: #64748B; text-align: left;">11:00 - 13:00</td>
+                <td class="h-low">2 batches</td>
+                <td class="h-med">4 batches</td>
+                <td class="h-high">6 batches</td>
+                <td class="h-low">3 batches</td>
+                <td class="h-high">7 batches</td>
+              </tr>
+              <tr>
+                <td style="font-size: 11.5px; font-weight: 600; color: #64748B; text-align: left;">15:30 - 17:00</td>
+                <td class="h-high">5 batches</td>
+                <td class="h-peak">11 batches</td>
+                <td class="h-peak">16 batches</td>
+                <td class="h-high">8 batches</td>
+                <td class="h-peak">19 batches</td>
+              </tr>
+              <tr>
+                <td style="font-size: 11.5px; font-weight: 600; color: #64748B; text-align: left;">18:00 - 20:00</td>
+                <td class="h-low">1 batch</td>
+                <td class="h-low">3 batches</td>
+                <td class="h-high">5 batches</td>
+                <td class="h-low">2 batches</td>
+                <td class="h-high">6 batches</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; font-size: 12px; border-top: 1px solid var(--color-border); padding-top: 12px;">
+            <div class="flex items-start gap-2">
+              <span style="font-size: 14px;">🔥</span>
+              <div>
+                <strong>Highest surplus ready:</strong> Wed & Fri 15:30 - 17:00 (Prep shifts end).
+              </div>
+            </div>
+            <div class="flex items-start gap-2">
+              <span style="font-size: 14px;">⚡</span>
+              <div>
+                <strong>Fastest pickup turnaround:</strong> 28 min average response time on Fridays.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column -->
+      <div class="right-col">
+        
+        <!-- Top Verified Recipients -->
+        <div class="a-card">
+          <div class="flex justify-between items-center mb-3">
+            <div>
+              <h3 style="margin: 0; font-size: 16px; font-weight: 800; color: #0F172A;">Top Verified Recipients</h3>
+              <div class="text-muted" style="font-size: 11.5px;">Direct shelter & pantry rescue destinations</div>
+            </div>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          </div>
+
+          <!-- Recipient 1 -->
+          <div style="padding: 10px 0; border-bottom: 1px solid var(--color-border);">
+            <div class="flex justify-between items-center mb-1">
+              <div class="flex items-center gap-2">
+                <span style="font-size: 12px; font-weight: 800; color: #0F172A; width: 14px;">1</span>
+                <strong style="font-size: 13.5px; color: #0F172A;">Eastside Pantry & Shelter</strong>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </div>
+              <span class="badge" style="background: #E8F5EF; color: #065F46; font-size: 10px;">Tier 1</span>
+            </div>
+            <div class="flex justify-between text-muted" style="font-size: 12px; padding-left: 20px;">
+              <span>542 meals (42% of total)</span>
+              <strong style="color: #0F172A;">18 collections</strong>
+            </div>
+          </div>
+
+          <!-- Recipient 2 -->
+          <div style="padding: 10px 0; border-bottom: 1px solid var(--color-border);">
+            <div class="flex justify-between items-center mb-1">
+              <div class="flex items-center gap-2">
+                <span style="font-size: 12px; font-weight: 800; color: #0F172A; width: 14px;">2</span>
+                <strong style="font-size: 13.5px; color: #0F172A;">Hope Community Kitchen</strong>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </div>
+              <span class="badge" style="background: #E8F5EF; color: #065F46; font-size: 10px;">Tier 1</span>
+            </div>
+            <div class="flex justify-between text-muted" style="font-size: 12px; padding-left: 20px;">
+              <span>380 meals (30%)</span>
+              <strong style="color: #0F172A;">12 collections</strong>
+            </div>
+          </div>
+
+          <!-- Recipient 3 -->
+          <div style="padding: 10px 0; border-bottom: 1px solid var(--color-border);">
+            <div class="flex justify-between items-center mb-1">
+              <div class="flex items-center gap-2">
+                <span style="font-size: 12px; font-weight: 800; color: #0F172A; width: 14px;">3</span>
+                <strong style="font-size: 13.5px; color: #0F172A;">City Mission Family Center</strong>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </div>
+              <span class="badge" style="background: #E8F5EF; color: #065F46; font-size: 10px;">Tier 1</span>
+            </div>
+            <div class="flex justify-between text-muted" style="font-size: 12px; padding-left: 20px;">
+              <span>216 meals (17%)</span>
+              <strong style="color: #0F172A;">8 collections</strong>
+            </div>
+          </div>
+
+          <!-- Recipient 4 -->
+          <div style="padding: 10px 0; border-bottom: 1px solid var(--color-border);">
+            <div class="flex justify-between items-center mb-1">
+              <div class="flex items-center gap-2">
+                <span style="font-size: 12px; font-weight: 800; color: #0F172A; width: 14px;">4</span>
+                <strong style="font-size: 13.5px; color: #0F172A;">St. Jude Food Table</strong>
+              </div>
+              <span class="badge" style="background: #F1F5F9; color: #475569; font-size: 10px;">Tier 2</span>
+            </div>
+            <div class="flex justify-between text-muted" style="font-size: 12px; padding-left: 20px;">
+              <span>146 meals (11%)</span>
+              <strong style="color: #0F172A;">6 collections</strong>
+            </div>
+          </div>
+
+          <div style="margin-top: 14px; text-align: right;">
+            <a href="#" style="color: var(--color-primary); font-size: 12.5px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+              Manage Recipient Partnerships →
+            </a>
+          </div>
+        </div>
+
+        <!-- Direct Ecological Impact -->
+        <div class="a-card">
+          <div class="flex justify-between items-center mb-2">
+            <h3 style="margin: 0; font-size: 16px; font-weight: 800; color: #0F172A;">Direct Ecological Impact</h3>
+            <span class="badge" style="background: #E8F5EF; color: #065F46; font-size: 10.5px;">30-day verified</span>
+          </div>
+          <p class="text-muted" style="margin: 0 0 14px 0; font-size: 12px; line-height: 1.4;">
+            By avoiding disposal channels and rapidly transferring edible surplus to community kitchens, your operations achieved:
+          </p>
+
+          <!-- 3 items -->
+          <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px;">
+            <div style="background: #F8FAFC; border: 1px solid var(--color-border); border-radius: 8px; padding: 12px; display: flex; align-items: center; gap: 12px;">
+              <div style="width: 32px; height: 32px; border-radius: 50%; background: #E8F5EF; color: var(--color-primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                🍃
+              </div>
+              <div>
+                <div style="font-size: 16px; font-weight: 800; color: #0F172A;">~1,680 kg CO₂e</div>
+                <div class="text-muted" style="font-size: 11px;">Greenhouse emissions prevented from organic rot</div>
+              </div>
+            </div>
+
+            <div style="background: #F8FAFC; border: 1px solid var(--color-border); border-radius: 8px; padding: 12px; display: flex; align-items: center; gap: 12px;">
+              <div style="width: 32px; height: 32px; border-radius: 50%; background: #E0F2FE; color: #0284C7; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                💧
+              </div>
+              <div>
+                <div style="font-size: 16px; font-weight: 800; color: #0F172A;">92,400 L</div>
+                <div class="text-muted" style="font-size: 11px;">Agricultural embedded water footprint conserved</div>
+              </div>
+            </div>
+
+            <div style="background: #F8FAFC; border: 1px solid var(--color-border); border-radius: 8px; padding: 12px; display: flex; align-items: center; gap: 12px;">
+              <div style="width: 32px; height: 32px; border-radius: 50%; background: #FEF3C7; color: #D97706; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                💵
+              </div>
+              <div>
+                <div style="font-size: 16px; font-weight: 800; color: #0F172A;">$6,420.00</div>
+                <div class="text-muted" style="font-size: 11px;">Fair market value eligible for food rescue tax documentation</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Highlight Box -->
+          <div style="background: #0F172A; color: #FFFFFF; border-radius: 8px; padding: 12px 14px; font-size: 12px; display: flex; align-items: center; gap: 8px; line-height: 1.4;">
+            <span>🤍</span>
+            <div>
+              <strong>1,284 community meals</strong> directly funded or provided at $0 cost to local families this billing cycle.
+            </div>
+          </div>
+        </div>
+
+        <!-- Category Breakdown Filter -->
+        <div class="a-card">
+          <div style="font-size: 11px; font-weight: 800; letter-spacing: 0.5px; color: #64748B; text-transform: uppercase; margin-bottom: 10px;">
+            CATEGORY BREAKDOWN FILTER
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+            <input type="radio" name="an_cat" id="cat-all" class="an-radio" checked>
+            <label for="cat-all" class="cat-pill-btn">✔ All Departments</label>
+
+            <input type="radio" name="an_cat" id="cat-prep" class="an-radio">
+            <label for="cat-prep" class="cat-pill-btn">Prepared Meals</label>
+
+            <input type="radio" name="an_cat" id="cat-bake" class="an-radio">
+            <label for="cat-bake" class="cat-pill-btn">Artisan Bakery</label>
+
+            <input type="radio" name="an_cat" id="cat-dairy" class="an-radio">
+            <label for="cat-dairy" class="cat-pill-btn">Chilled Dairy</label>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Bottom Intelligence Banner -->
+    <div style="background: #F4FBF8; border: 1px solid #A7F3D0; border-radius: var(--radius-lg); padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-top: 10px;">
+      <div class="flex items-center gap-3">
+        <div style="width: 32px; height: 32px; border-radius: 8px; background: #065F46; color: #FFF; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;">
+          💡
+        </div>
+        <div>
+          <div style="font-size: 13.5px; font-weight: 800; color: #0F172A;">Automated Surplus Intelligence</div>
+          <div style="font-size: 12px; color: #334155;">Bakery items have a <strong>94% rescue rate</strong> when listed before 14:00. Prepared platters expire twice as often if listed after 18:00.</div>
+        </div>
+      </div>
+
+      <button class="btn btn-outline btn-sm" style="background: #FFFFFF; border-color: var(--color-border); color: #0F172A; font-weight: 700; font-size: 12.5px;">
+        Adjust Dispatch Schedule
+      </button>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer style="background: #FFFFFF; border-top: 1px solid var(--color-border); padding: 24px 0; margin-top: 40px;">
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-size: 12.5px; color: var(--color-muted);">
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="var(--color-primary)" stroke-width="2"/></svg>
+        <strong style="color: #0F172A;">SurplusLink Civic Engine</strong> • Clear, dependable and built around timely action.
+      </div>
+      <div style="display: flex; gap: 20px;">
+        <a href="#" style="color: var(--color-muted); text-decoration: none;">Food Safety Charter</a>
+        <a href="#" style="color: var(--color-muted); text-decoration: none;">Tax Exemption Logs</a>
+        <a href="#" style="color: var(--color-muted); text-decoration: none;">Reporting an Issue</a>
+        <a href="#" style="color: var(--color-muted); text-decoration: none;">Community Guidelines</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Mobile Bottom Nav -->
+  <div class="mobile-nav">
+    <a href="explore.html" class="mobile-nav-item">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+      <span>Explore</span>
+    </a>
+    <a href="reservation.html" class="mobile-nav-item">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+      <span>Collections</span>
+    </a>
+    <a href="analytics.html" class="mobile-nav-item active">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>
+      <span>Impact</span>
+    </a>
+    <a href="profile.html" class="mobile-nav-item">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      <span>Profile</span>
+    </a>
+  </div>
+
+</body>
+</html>

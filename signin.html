@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In – SurplusLink</title>
+  <meta name="description" content="Sign in to browse available surplus food batches and manage active pickup reservations.">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .auth-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: #F8FAFC;
+    }
+    .auth-header {
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .auth-container {
+      max-width: 1080px;
+      margin: 40px auto;
+      padding: 0 24px;
+      flex: 1;
+      width: 100%;
+    }
+    .auth-card {
+      background: #FFFFFF;
+      border: 1px solid var(--color-border);
+      border-radius: 16px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 440px 1fr;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+    }
+    .auth-sidebar {
+      background: linear-gradient(145deg, #064E3B 0%, #0F172A 100%);
+      color: #FFFFFF;
+      padding: 36px 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+    .auth-main {
+      padding: 40px 48px;
+    }
+    .role-segmented {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: #E8F5EF;
+      border-radius: 8px;
+      padding: 4px;
+      margin-bottom: 24px;
+      gap: 4px;
+    }
+    .role-radio {
+      display: none;
+    }
+    .role-btn {
+      border: none;
+      background: transparent;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #065F46;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+    .role-radio:checked + .role-btn {
+      background: #FFFFFF;
+      color: #0F172A;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+    @media (max-width: 900px) {
+      .auth-card {
+        grid-template-columns: 1fr;
+      }
+      .auth-sidebar {
+        display: none;
+      }
+      .auth-main {
+        padding: 32px 24px;
+      }
+    }
+  </style>
+</head>
+<body class="auth-page">
+
+  <!-- Header -->
+  <header class="auth-header">
+    <div>
+      <a href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 20px; color: var(--color-primary-dark);">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="var(--color-primary)"/>
+          <path d="M2 17L12 22L22 17" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2 12L12 17L22 12" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        SurplusLink
+      </a>
+      <div style="font-size: 11px; color: #64748B; margin-top: 2px;">Connecting surplus food with communities in real time</div>
+    </div>
+    
+    <div style="display: flex; align-items: center; gap: 12px; font-size: 13px;">
+      <span style="color: #64748B;">Don't have an account?</span>
+      <a href="index.html" class="btn btn-outline btn-sm" style="border-color: var(--color-border); color: #0F172A; font-weight: 700; text-decoration: none;">
+        Sign up →
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Auth Card -->
+  <main class="auth-container">
+    <div class="auth-card">
+      
+      <!-- Left Hero Column -->
+      <div class="auth-sidebar">
+        <div>
+          <span class="badge" style="background: rgba(167, 243, 208, 0.2); color: #A7F3D0; border: 1px solid rgba(167, 243, 208, 0.3); font-size: 11px; font-weight: 700; margin-bottom: 16px;">
+            ● Verified Civic Logistics
+          </span>
+          <h2 style="margin: 0 0 12px 0; font-size: 28px; font-weight: 800; line-height: 1.25; color: #FFFFFF;">
+            Turn perishable surplus into community nourishment.
+          </h2>
+          <p style="margin: 0 0 24px 0; font-size: 13.5px; line-height: 1.5; color: #CBD5E1;">
+            Coordinating safe surplus collection directly between local food donors, verified pantries, and mutual aid networks.
+          </p>
+
+          <!-- Floating Live Weekly Rescue Card -->
+          <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 12px; padding: 18px; backdrop-filter: blur(10px); margin-bottom: 24px;">
+            <div class="flex justify-between items-center mb-2">
+              <span class="flex items-center gap-1.5" style="font-size: 11px; font-weight: 800; letter-spacing: 0.5px; color: #A7F3D0; text-transform: uppercase;">
+                🤝 LIVE WEEKLY RESCUE
+              </span>
+              <span class="badge" style="background: #065F46; color: #A7F3D0; font-size: 10px;">Active</span>
+            </div>
+            <div style="font-size: 32px; font-weight: 800; color: #FFFFFF; margin-bottom: 4px;">1,284+</div>
+            <div style="font-size: 12px; color: #CBD5E1; margin-bottom: 12px; line-height: 1.4;">
+              Meals rescued this week across 64 civic distribution batches
+            </div>
+            <div class="flex justify-between" style="font-size: 11px; color: #A7F3D0; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+              <span>✔ Certified Food Safety Guarantee</span>
+              <span>♻ Zero-Waste</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <!-- Live item feed pill -->
+          <div style="background: rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 8px 12px; display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
+            <div style="font-size: 20px;">📦</div>
+            <div>
+              <div style="font-size: 12px; font-weight: 700; color: #FFFFFF;">Fresh Harvest Crates just rescued</div>
+              <div style="font-size: 10.5px; color: #94A3B8;">Collected by Northside Civic Pantry • 14 mins ago</div>
+            </div>
+          </div>
+
+          <div style="font-size: 11px; color: #94A3B8; display: flex; align-items: center; gap: 6px;">
+            ⚖ Protected under the Federal Bill Emerson Good Samaritan Act
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Form Column -->
+      <div class="auth-main">
+        
+        <div style="font-size: 11px; font-weight: 800; letter-spacing: 0.5px; color: #64748B; text-transform: uppercase; margin-bottom: 8px;">
+          SELECT YOUR OPERATIONAL ROLE
+        </div>
+
+        <div class="role-segmented">
+          <input type="radio" name="signin_role" id="role-recipient" class="role-radio" checked>
+          <label for="role-recipient" class="role-btn">
+            <span>🚚</span> Recipient / Collector
+          </label>
+          <input type="radio" name="signin_role" id="role-provider" class="role-radio">
+          <label for="role-provider" class="role-btn">
+            <span>🏪</span> Provider / Donor
+          </label>
+        </div>
+
+        <h1 style="margin: 0 0 6px 0; font-size: 24px; font-weight: 800; color: #0F172A;">Welcome back to SurplusLink</h1>
+        <p class="text-muted" style="margin: 0 0 24px 0; font-size: 13.5px;">
+          Sign in to browse available food batches and manage active pickup reservations.
+        </p>
+
+        <form action="explore.html" method="get">
+          <div class="form-group mb-3">
+            <label class="form-label" style="font-size: 13px;">Work or Organization Email</label>
+            <div style="position: relative;">
+              <span style="position: absolute; left: 12px; top: 12px; color: #64748B; font-weight: 700;">@</span>
+              <input type="email" class="form-input" value="name@communitypantry.org" style="padding-left: 32px;" required>
+            </div>
+          </div>
+
+          <div class="form-group mb-3">
+            <div class="flex justify-between items-center mb-1">
+              <label class="form-label" style="font-size: 13px; margin: 0;">Password</label>
+              <a href="#" style="font-size: 12px; color: var(--color-primary); font-weight: 700; text-decoration: none;">Forgot password?</a>
+            </div>
+            <div style="position: relative;">
+              <span style="position: absolute; left: 12px; top: 12px; color: #64748B;">🔒</span>
+              <input type="password" class="form-input" value="••••••••••••" style="padding-left: 32px; padding-right: 36px;" required>
+              <button type="button" style="position: absolute; right: 10px; top: 10px; background: none; border: none; cursor: pointer; color: #64748B; font-size: 14px;">👁</button>
+            </div>
+          </div>
+
+          <!-- QR badge alternative -->
+          <div style="background: #F4FBF8; border: 1px solid #A7F3D0; border-radius: 8px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; font-size: 12.5px;">
+            <div class="flex items-center gap-2" style="color: #065F46; font-weight: 600;">
+              <span>🏷</span> Have a <strong>Civic Volunteer QR Badge</strong>?
+            </div>
+            <a href="#" style="color: var(--color-primary); font-weight: 800; text-decoration: none;">Scan badge</a>
+          </div>
+
+          <div class="flex items-center gap-2 mb-4">
+            <input type="checkbox" id="remember" checked style="accent-color: var(--color-primary); width: 16px; height: 16px;">
+            <label for="remember" style="font-size: 13px; color: #334155; cursor: pointer;">Remember this device for 30 days</label>
+          </div>
+
+          <button type="submit" class="btn btn-secondary" style="width: 100%; background: #0F172A; color: #FFF; font-weight: 800; padding: 12px; font-size: 14px; justify-content: center; margin-bottom: 20px;">
+            Sign In to SurplusLink →
+          </button>
+        </form>
+
+        <div style="position: relative; text-align: center; margin-bottom: 20px;">
+          <div style="position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: var(--color-border);"></div>
+          <span style="position: relative; background: #FFFFFF; padding: 0 12px; font-size: 11px; font-weight: 700; color: #64748B; letter-spacing: 0.5px; text-transform: uppercase;">
+            OR CONTINUE WITH
+          </span>
+        </div>
+
+        <!-- 2 SSO Buttons -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px;">
+          <button type="button" class="btn btn-outline" style="border-color: var(--color-border); font-size: 12.5px; font-weight: 700; color: #0F172A; justify-content: center;">
+            🏛 Civic ID / Nonprofit Hub
+          </button>
+          <button type="button" class="btn btn-outline" style="border-color: var(--color-border); font-size: 12.5px; font-weight: 700; color: #0F172A; justify-content: center;">
+            <span style="color: #EA4335; font-weight: 900;">G</span> Google Account
+          </button>
+        </div>
+
+        <div class="flex justify-between items-center text-muted" style="font-size: 11.5px; border-top: 1px solid var(--color-border); padding-top: 14px;">
+          <div class="flex items-center gap-1.5">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Protected under Good Samaritan Food Donation Act
+          </div>
+          <div>
+            <a href="#" style="color: #64748B; text-decoration: none;">Help Center</a> • <a href="#" style="color: #64748B; text-decoration: none;">Privacy & Security</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer style="padding: 16px 32px; background: #FFFFFF; border-top: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #64748B; flex-wrap: wrap; gap: 12px;">
+    <div>● SurplusLink Civic Network Node #402: Operational</div>
+    <div>© 2025 SurplusLink. Dedicated to Zero-Waste Community Food Security.</div>
+  </footer>
+
+</body>
+</html>

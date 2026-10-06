@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile – SurplusLink</title>
+  <meta name="description" content="Your SurplusLink profile and impact metrics.">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .profile-header-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .profile-avatar-wrap {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .profile-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 16px;
+      background: #1E2D28;
+      color: white;
+      font-size: 24px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .profile-avatar-verified {
+      position: absolute;
+      bottom: -6px;
+      right: -6px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .profile-avatar-verified svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .profile-meta-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-weight: 600;
+      background: var(--color-success-bg);
+      color: var(--color-primary);
+      border: 1px solid #A7D9BF;
+      margin-right: 6px;
+    }
+
+    .impact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .impact-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .impact-card__row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .impact-card__label {
+      font-size: 13px;
+      color: var(--color-muted);
+    }
+
+    .impact-card__delta {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--color-success);
+    }
+
+    .impact-card__value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--color-text);
+      line-height: 1.1;
+    }
+
+    .impact-card__sub {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--color-muted);
+      margin-left: 4px;
+    }
+
+    .impact-card__note {
+      font-size: 12px;
+      color: var(--color-muted);
+    }
+
+    .section-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+
+    .section-card__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--color-border);
+      margin-bottom: 20px;
+    }
+
+    .section-card__title {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .field-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--color-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 6px;
+    }
+
+    .field-value {
+      height: 40px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 0 12px;
+      font-size: 14px;
+      color: var(--color-text);
+      background: var(--color-surface);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .pref-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .pref-row:last-of-type {
+      border-bottom: none;
+    }
+
+    .pref-row__label {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .pref-row__sub {
+      font-size: 12px;
+      color: var(--color-muted);
+    }
+
+    .btn-configure {
+      height: 32px;
+      padding: 0 14px;
+      font-size: 13px;
+      border-radius: var(--radius-pill);
+      background: var(--color-success-bg);
+      color: var(--color-primary);
+      border: 1px solid #A7D9BF;
+      cursor: pointer;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .btn-manage {
+      height: 32px;
+      padding: 0 14px;
+      font-size: 13px;
+      border-radius: var(--radius-pill);
+      background: white;
+      color: var(--color-text);
+      border: 1px solid var(--color-border);
+      cursor: pointer;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .registered-note {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 16px;
+      margin-top: 8px;
+      border-top: 1px solid var(--color-border);
+      font-size: 13px;
+    }
+
+    .btn-logout {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      height: 38px;
+      padding: 0 16px;
+      background: #FEF2F2;
+      color: #C0392B;
+      border: 1px solid #F5C6C6;
+      border-radius: var(--radius-pill);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+    .toggle-slider {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #CBD5E1;
+      border-radius: 24px;
+      transition: 0.2s ease;
+    }
+    .toggle-slider::before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      border-radius: 50%;
+      transition: 0.2s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    }
+    .toggle-switch input:checked + .toggle-slider {
+      background-color: var(--color-primary);
+    }
+    .toggle-switch input:checked + .toggle-slider::before {
+      transform: translateX(20px);
+    }
+    @media (max-width: 768px) {
+      .profile-header-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .impact-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="explore.html" class="nav-logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="currentColor"/>
+        <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      SurplusLink
+    </a>
+    <div class="nav-links">
+      <a href="explore.html">Explore food</a>
+      <a href="reservation.html">My collections</a>
+      <a href="analytics.html">Our impact</a>
+    </div>
+    <div class="nav-actions">
+      <a href="create-listing.html" class="btn btn-primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Share surplus
+      </a>
+      <a href="notifications.html" class="nav-icon-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      </a>
+      <a href="profile.html" class="nav-avatar">AM</a>
+    </div>
+  </nav>
+
+  <main class="page-main">
+    <div class="container" style="max-width: 840px;">
+
+      <!-- Profile Header -->
+      <div class="profile-header-card">
+        <div class="flex items-center gap-4">
+          <div class="profile-avatar-wrap">
+            <div class="profile-avatar">AM</div>
+            <div class="profile-avatar-verified">
+              <svg viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="11" fill="var(--color-success)"/>
+                <polyline points="7 12 10.5 15.5 17 9" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-center gap-2 mb-1 flex-wrap">
+              <h1 style="font-size: 22px; margin: 0;">Marcus Vance</h1>
+              <span class="profile-meta-tag">Provider &amp; Donor</span>
+            </div>
+            <div style="font-size: 14px; font-weight: 600; color: var(--color-text); margin-bottom: 3px;">The Green Kitchen &amp; Bakery</div>
+            <div class="flex items-center gap-1 text-muted" style="font-size: 13px;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              24 Market Street, Civic District &bull; Hub #14
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-outline" style="font-size: 13px; height: 36px; padding: 0 16px; flex-shrink: 0;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+          Edit Profile
+        </button>
+      </div>
+
+      <!-- Impact Section -->
+      <div class="flex justify-between items-center mb-3">
+        <h2 style="font-size: 17px; margin: 0; font-weight: 700;">SurplusLink Impact</h2>
+        <span style="font-size: 13px; font-weight: 600; color: var(--color-primary);">Verified Rescues</span>
+      </div>
+
+      <div class="impact-grid">
+        <div class="impact-card">
+          <div class="impact-card__row">
+            <span class="impact-card__label">Donations Made</span>
+            <span class="impact-card__delta">↑ 14%</span>
+          </div>
+          <div>
+            <span class="impact-card__value">128</span>
+          </div>
+        </div>
+        <div class="impact-card">
+          <div class="impact-card__row">
+            <span class="impact-card__label">Food Rescued</span>
+            <span class="impact-card__delta">18.6% vs mo</span>
+          </div>
+          <div>
+            <span class="impact-card__value">1,284</span>
+            <span class="impact-card__sub">portions</span>
+          </div>
+        </div>
+        <div class="impact-card">
+          <div class="impact-card__row">
+            <span class="impact-card__label">Successful Connections</span>
+            <span class="impact-card__note">Pantries</span>
+          </div>
+          <div>
+            <span class="impact-card__value">46</span>
+          </div>
+        </div>
+        <div class="impact-card">
+          <div class="impact-card__row">
+            <span class="impact-card__label">Donations Received</span>
+            <span class="impact-card__note">Hub swaps</span>
+          </div>
+          <div>
+            <span class="impact-card__value">12</span>
+            <span class="impact-card__sub">batches</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Personal Information -->
+      <div class="section-card">
+        <div class="section-card__header">
+          <span class="section-card__title">Personal Information</span>
+          <span style="font-size: 12px; font-weight: 600; color: var(--color-primary); background: var(--color-success-bg); padding: 3px 10px; border-radius: var(--radius-pill); border: 1px solid #A7D9BF;">Verified ID</span>
+        </div>
+
+        <div class="form-row">
+          <div>
+            <div class="field-label">Full Name</div>
+            <div class="field-value">Marcus Vance</div>
+          </div>
+          <div>
+            <div class="field-label">Email Address</div>
+            <div class="field-value">
+              surplus@thegreenkitchen.com
+              <span style="font-size: 11px; font-weight: 700; color: var(--color-primary);">Primary</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div>
+            <div class="field-label">Phone Number</div>
+            <div class="field-value">+1 (555) 019-2834</div>
+          </div>
+          <div>
+            <div class="field-label">Location</div>
+            <div class="field-value">24 Market Street, Civic District</div>
+          </div>
+        </div>
+
+        <div class="registered-note">
+          <span class="text-muted">Registered as Food Donor since October 2024</span>
+        </div>
+      </div>
+
+      <!-- Account & Preferences -->
+      <div class="section-card">
+        <div class="section-card__header">
+          <span class="section-card__title">Account &amp; Preferences</span>
+        </div>
+
+        <div class="pref-row">
+          <div>
+            <div class="pref-row__label">SMS &amp; Urgent Reservation Alerts</div>
+            <div class="pref-row__sub">Instant push &amp; SMS notifications when pantries claim perishable batches.</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <div class="pref-row">
+          <div>
+            <div class="pref-row__label">Automated Hold Window Protocol</div>
+            <div class="pref-row__sub">Guarantees 30-minute hold reservation for verified Tier 1 civic collectors.</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <div class="pref-row">
+          <div>
+            <div class="pref-row__label">Good Samaritan Tax Log Export</div>
+            <div class="pref-row__sub">Auto-generate verified municipal donation receipts for monthly tax deduction.</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <div class="pref-row">
+          <div>
+            <div class="pref-row__label">Help &amp; Support Dispatch</div>
+            <div class="pref-row__sub">Contact active SurplusLink city coordination desk.</div>
+          </div>
+          <a href="#" style="font-size: 13px; font-weight: 700; color: var(--color-primary); text-decoration: none;">Contact Desk →</a>
+        </div>
+
+        <div style="padding-top: 16px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--color-border); margin-top: 4px;">
+          <span style="font-size: 13px; color: var(--color-muted);">Registered Donor since Oct 2024</span>
+          <a href="signin.html" class="btn-logout" style="text-decoration: none;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Log Out
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Site footer -->
+  <footer class="site-footer">
+    <div class="flex items-center gap-2">
+      <span style="color: var(--color-success); font-size: 16px;">●</span>
+      Rescue Network Operational &bull; 42 hubs active
+    </div>
+    <span>© 2026 SurplusLink Coordination Engine.</span>
+  </footer>
+
+  <!-- Mobile Bottom Nav -->
+  <nav class="mobile-nav">
+    <a href="explore.html" class="mobile-nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Explore
+    </a>
+    <a href="reservation.html" class="mobile-nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      Collections
+    </a>
+    <a href="analytics.html" class="mobile-nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+      Impact
+    </a>
+    <a href="profile.html" class="mobile-nav-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Profile
+    </a>
+  </nav>
+
+</body>
+</html>

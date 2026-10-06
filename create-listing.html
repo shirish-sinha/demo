@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Surplus Listing – SurplusLink</title>
+  <meta name="description" content="List your surplus quickly so nearby recipients can collect it before it expires.">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .cl-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 24px;
+      align-items: start;
+    }
+    .cl-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .cl-toggle-radio,
+    .cl-pill-checkbox,
+    .cl-radio-input {
+      display: none;
+    }
+    .toggle-group {
+      display: inline-flex;
+      background: #E8F5EF;
+      border-radius: 8px;
+      padding: 3px;
+      width: 100%;
+      gap: 2px;
+    }
+    .toggle-btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #065F46;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s ease;
+      user-select: none;
+      display: inline-block;
+    }
+    .cl-toggle-radio:checked + .toggle-btn,
+    .toggle-btn.active {
+      background: #FFFFFF;
+      color: #0F172A;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    .stepper-control {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      background: #FFFFFF;
+      overflow: hidden;
+    }
+    .stepper-btn {
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: #F8FAFC;
+      font-size: 16px;
+      font-weight: 700;
+      color: #0F172A;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .pill-select {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12.5px;
+      font-weight: 600;
+      border: 1px solid var(--color-border);
+      background: #FFFFFF;
+      color: #334155;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+    .cl-pill-checkbox:checked + .pill-select,
+    .pill-select.active {
+      background: #E8F5EF;
+      border-color: var(--color-primary);
+      color: var(--color-primary-dark);
+      font-weight: 700;
+    }
+    .radio-card {
+      border: 1.5px solid var(--color-border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      background: #FFFFFF;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+    .radio-card .radio-circle {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 1.5px solid #94A3B8;
+      margin-top: 2px;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+    .cl-radio-input:checked + .radio-card,
+    .radio-card.active {
+      border-color: var(--color-primary);
+      background: #F4FBF8;
+    }
+    .cl-radio-input:checked + .radio-card .radio-circle {
+      background: var(--color-primary);
+      border: 4px solid #FFF;
+      box-shadow: 0 0 0 1px var(--color-primary);
+    }
+    .allergen-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      background: #FEE2E2;
+      color: #DC2626;
+      border: 1px solid #FECACA;
+    }
+    @media (max-width: 960px) {
+      .cl-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body style="background-color: var(--color-background);">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="explore.html" class="nav-logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="var(--color-primary)"/>
+        <path d="M2 17L12 22L22 17" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M2 12L12 17L22 12" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      SurplusLink
+    </a>
+    <div class="nav-links">
+      <a href="explore.html">Explore food</a>
+      <a href="reservation.html">My collections</a>
+      <a href="analytics.html">Our impact</a>
+    </div>
+    <div class="nav-actions">
+      <a href="create-listing.html" class="btn btn-primary btn-sm">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        Share surplus
+      </a>
+      <a href="notifications.html" class="nav-icon-btn" title="Notifications">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+        <span class="unread-dot"></span>
+      </a>
+      <a href="profile.html" class="nav-avatar" title="View Profile">AM</a>
+    </div>
+  </nav>
+
+  <!-- Sub-nav Breadcrumb & Urgency Info -->
+  <div style="background: #FFFFFF; border-bottom: 1px solid var(--color-border); padding: 12px 24px;">
+    <div class="container" style="padding: 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+      <a href="explore.html" style="color: var(--color-primary); font-weight: 600; text-decoration: none; font-size: 13px; display: flex; align-items: center; gap: 4px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Back to listings
+      </a>
+
+      <div style="background: #F8FAFC; border: 1px solid var(--color-border); border-radius: 20px; padding: 4px 14px; font-size: 12px; color: #334155; display: flex; align-items: center; gap: 6px;">
+        <span>⏱</span>
+        <span><strong>Time matters:</strong> Listings with verified windows reserve 3x faster.</span>
+      </div>
+    </div>
+  </div>
+
+  <main class="container" style="padding-top: 24px; padding-bottom: 80px;">
+
+    <!-- Page Header -->
+    <div style="margin-bottom: 24px;">
+      <h1 style="margin: 0 0 6px 0; font-size: 28px; font-weight: 800; color: #0F172A;">Create Surplus Listing</h1>
+      <p class="text-muted" style="margin: 0; font-size: 14px;">
+        List your surplus quickly so nearby recipients can collect it before it expires.
+      </p>
+    </div>
+
+    <div class="cl-layout">
+      
+      <!-- Left Column: Form Steps 1, 2, 3 -->
+      <div class="left-col">
+        
+        <!-- 1. Food Details -->
+        <div class="cl-card">
+          <div class="flex justify-between items-center mb-4" style="border-bottom: 1px solid var(--color-border); padding-bottom: 12px;">
+            <h2 style="margin: 0; font-size: 18px; font-weight: 800; color: #0F172A;">1. Food Details</h2>
+            <span class="badge" style="background: #E8F5EF; color: #065F46; font-size: 11px; font-weight: 700;">Step 1 of 3</span>
+          </div>
+
+          <div class="form-group mb-3">
+            <div class="flex justify-between items-center mb-1">
+              <label class="form-label" style="font-size: 13px; margin: 0;">Food name *</label>
+              <span style="font-size: 11px; color: #64748B;">Max 80 chars</span>
+            </div>
+            <input type="text" class="form-input" value="Artisan Multigrain Sourdough & Focaccia" required>
+            <div style="font-size: 11.5px; color: #64748B; margin-top: 4px;">Be specific about the recipe items, freshness, and package state.</div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+            <div class="form-group">
+              <label class="form-label" style="font-size: 13px;">Food category *</label>
+              <select class="form-input">
+                <option selected>Bakery & Breads</option>
+                <option>Prepared Meals</option>
+                <option>Fresh Produce</option>
+                <option>Dairy & Chilled</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" style="font-size: 13px;">Unit of measure *</label>
+              <div class="toggle-group">
+                <input type="radio" name="cl_uom" id="uom-portions" class="cl-toggle-radio" checked>
+                <label for="uom-portions" class="toggle-btn">Portions</label>
+                <input type="radio" name="cl_uom" id="uom-kg" class="cl-toggle-radio">
+                <label for="uom-kg" class="toggle-btn">Kilograms (kg)</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" style="font-size: 13px;">Available quantity *</label>
+            <div class="flex items-center gap-3">
+              <div class="stepper-control">
+                <button type="button" class="stepper-btn">−</button>
+                <span style="font-size: 16px; font-weight: 800; padding: 0 16px; color: #0F172A;">14</span>
+                <button type="button" class="stepper-btn">+</button>
+              </div>
+              <span class="text-muted" style="font-size: 12.5px;">14 portions available for instant reservation</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Expiry & Shelf Life -->
+        <div class="cl-card">
+          <div style="border-bottom: 1px solid var(--color-border); padding-bottom: 10px; margin-bottom: 16px;">
+            <h2 style="margin: 0 0 4px 0; font-size: 18px; font-weight: 800; color: #0F172A;">2. Expiry & Shelf Life</h2>
+            <div class="text-muted" style="font-size: 12px;">Recipients rely on precise timestamps to plan pick-ups safely.</div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 14px;">
+            <div class="form-group">
+              <label class="form-label" style="font-size: 13px;">Expiry date *</label>
+              <input type="text" class="form-input" value="Today, Oct 5, 2026">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" style="font-size: 13px;">Expiry time *</label>
+              <input type="text" class="form-input" value="18:30">
+            </div>
+          </div>
+
+          <!-- Urgency Banner -->
+          <div style="background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 8px; padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; font-size: 12.5px;">
+            <div class="flex items-center gap-2" style="color: #C2410C; font-weight: 700;">
+              <span>● ⚡ Expiring Soon • 2h 15m remaining (Expires at 18:30 sharp)</span>
+            </div>
+            <span style="font-size: 11px; color: #9A3412;">Auto-calculated urgency</span>
+          </div>
+        </div>
+
+        <!-- 3. Collection & Pickup Logistics -->
+        <div class="cl-card">
+          <div style="border-bottom: 1px solid var(--color-border); padding-bottom: 12px; margin-bottom: 16px;">
+            <h2 style="margin: 0; font-size: 18px; font-weight: 800; color: #0F172A;">3. Collection & Pickup Logistics</h2>
+          </div>
+
+          <!-- Pickup window box -->
+          <div style="background: #F4FBF8; border: 1px solid #A7F3D0; border-radius: 8px; padding: 14px; margin-bottom: 16px;">
+            <div class="flex justify-between items-center mb-2">
+              <label class="form-label" style="font-size: 13px; color: #065F46; font-weight: 800; margin: 0;">Pickup Window *</label>
+              <span class="badge" style="background: #E8F5EF; color: #065F46; font-size: 10.5px;">2h collection window</span>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+              <div class="form-group" style="margin: 0;">
+                <label class="form-label" style="font-size: 12px;">Pickup start time *</label>
+                <input type="text" class="form-input" value="16:00" style="background: #FFF;">
+              </div>
+              <div class="form-group" style="margin: 0;">
+                <label class="form-label" style="font-size: 12px;">Pickup end time *</label>
+                <input type="text" class="form-input" value="18:00" style="background: #FFF;">
+              </div>
+            </div>
+          </div>
+
+          <!-- Address & Notes -->
+          <div style="border: 1px solid var(--color-border); border-radius: 8px; padding: 14px;">
+            <div class="form-group mb-3">
+              <div class="flex justify-between items-center mb-1">
+                <label class="form-label" style="font-size: 13px; margin: 0;">Pickup location / address *</label>
+                <span class="badge" style="background: #E8F5EF; color: #065F46; font-size: 10.5px;">✔ Verified</span>
+              </div>
+              <input type="text" class="form-input" value="The Green Kitchen, 24 Market Street, Suite B" required>
+            </div>
+
+            <div class="form-group" style="margin: 0;">
+              <label class="form-label" style="font-size: 13px;">Pickup instructions (optional)</label>
+              <textarea class="form-input" rows="2">Collect from the side bakery counter. Ask for Marcus.</textarea>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Step 4 Photo & Safety & Live Preview -->
+      <div class="right-col">
+        
+        <!-- 4. Photo & Food Safety -->
+        <div class="cl-card">
+          <h2 style="margin: 0 0 16px 0; font-size: 18px; font-weight: 800; color: #0F172A; border-bottom: 1px solid var(--color-border); padding-bottom: 12px;">
+            4. Photo & Food Safety
+          </h2>
+
+          <div class="form-group mb-4">
+            <label class="form-label" style="font-size: 13px;">Food photo</label>
+            <div style="background: #F4FBF8; border: 1.5px dashed #A7F3D0; border-radius: 10px; padding: 12px; display: flex; align-items: center; gap: 12px;">
+              <img src="assets/images/food_sourdough.png" alt="Uploaded photo" style="width: 60px; height: 50px; border-radius: 6px; object-fit: cover;">
+              <div>
+                <div class="flex items-center gap-1.5" style="font-size: 12.5px; font-weight: 800; color: #065F46;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  Photo uploaded
+                </div>
+                <a href="#" style="font-size: 11.5px; color: var(--color-primary); font-weight: 700; text-decoration: none;">Change photo</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group mb-4">
+            <label class="form-label" style="font-size: 13px;">Dietary classification *</label>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+              <input type="checkbox" id="cl-diet-veg" class="cl-pill-checkbox" checked>
+              <label for="cl-diet-veg" class="pill-select">✔ Vegetarian</label>
+
+              <input type="checkbox" id="cl-diet-vegan" class="cl-pill-checkbox">
+              <label for="cl-diet-vegan" class="pill-select">Vegan</label>
+
+              <input type="checkbox" id="cl-diet-halal" class="cl-pill-checkbox">
+              <label for="cl-diet-halal" class="pill-select">Halal</label>
+
+              <input type="checkbox" id="cl-diet-gf" class="cl-pill-checkbox">
+              <label for="cl-diet-gf" class="pill-select">Gluten-Free</label>
+            </div>
+          </div>
+
+          <div class="form-group mb-4">
+            <label class="form-label" style="font-size: 13px;">Storage & handling *</label>
+            <input type="radio" name="cl_storage" id="storage-room" class="cl-radio-input" checked>
+            <label for="storage-room" class="radio-card">
+              <div class="radio-circle"></div>
+              <div>
+                <div style="font-size: 13px; font-weight: 800; color: #0F172A;">Room temperature</div>
+                <div style="font-size: 11px; color: #64748B;">Safe at ambient dry room conditions</div>
+              </div>
+            </label>
+
+            <input type="radio" name="cl_storage" id="storage-chilled" class="cl-radio-input">
+            <label for="storage-chilled" class="radio-card">
+              <div class="radio-circle"></div>
+              <div>
+                <div style="font-size: 13px; font-weight: 700; color: #334155;">Keep chilled (≤5°C)</div>
+                <div style="font-size: 11px; color: #64748B;">Requires immediate refrigerated cold chain</div>
+              </div>
+            </label>
+          </div>
+
+          <div class="form-group" style="margin: 0;">
+            <label class="form-label" style="font-size: 13px;">Allergen declaration</label>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+              <span class="allergen-tag">⚠ Contains Gluten</span>
+              <span class="allergen-tag">⚠ Contains Sesame</span>
+              <button type="button" style="border: 1px dashed var(--color-border); background: #FFF; font-size: 11.5px; padding: 4px 8px; border-radius: 6px; cursor: pointer; color: #64748B;">+ Add allergen</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Recipient Preview -->
+        <div style="margin-bottom: 24px;">
+          <div class="flex items-center gap-1.5 mb-1" style="font-size: 13px; font-weight: 800; color: #0F172A;">
+            <span>👁</span> Live Recipient Preview
+          </div>
+          <p class="text-muted" style="margin: 0 0 12px 0; font-size: 11.5px;">
+            Real-time simulation of your card on the recipient community feed:
+          </p>
+
+          <!-- Listing card preview -->
+          <div class="card" style="border: 1px solid var(--color-border); border-radius: 12px; overflow: hidden; background: #FFFFFF; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+            <div style="position: relative; height: 150px; background: #F1F5F9;">
+              <img src="assets/images/food_sourdough.png" alt="Bread" style="width: 100%; height: 100%; object-fit: cover;">
+              <span class="badge" style="position: absolute; top: 10px; left: 10px; background: #FFF7ED; color: #C2410C; border: 1px solid #FED7AA; font-weight: 700; font-size: 10.5px;">
+                ● Expiring soon
+              </span>
+            </div>
+
+            <div style="padding: 16px;">
+              <h3 style="margin: 0 0 4px 0; font-size: 15px; font-weight: 800; color: #0F172A;">Artisan Multigrain Sourdough & Focaccia</h3>
+              <div class="text-muted" style="font-size: 12px; margin-bottom: 10px;">The Green Kitchen ✔ • 0.4 km away</div>
+
+              <div style="background: #FFF7ED; border-radius: 6px; padding: 6px 10px; display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; margin-bottom: 8px;">
+                <span style="color: #C2410C; font-weight: 700;">🕒 2h 15m remaining</span>
+                <strong style="color: #0F172A;">14 portions</strong>
+              </div>
+
+              <div style="font-size: 11.5px; color: #64748B; margin-bottom: 10px;">
+                📅 Pickup today, 16:00 – 18:00
+              </div>
+
+              <div style="display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 12px;">
+                <span class="badge" style="background: #E8F5EF; color: #065F46; font-size: 10px;">Vegetarian</span>
+                <span class="badge" style="background: #F1F5F9; color: #475569; font-size: 10px;">Room Temp</span>
+                <span class="badge" style="background: #F1F5F9; color: #475569; font-size: 10px;">Mild</span>
+                <span class="badge" style="background: #FEE2E2; color: #DC2626; font-size: 10px;">Gluten</span>
+              </div>
+
+              <button class="btn btn-primary" style="width: 100%; font-size: 13px; padding: 10px; justify-content: center;" disabled>
+                Reserve food (Preview)
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Bottom Action Bar -->
+    <div style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: 12px; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+      <div class="flex items-center gap-2" style="font-size: 12.5px; color: #065F46; font-weight: 600;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        Listing will become visible immediately to verified nearby recipients.
+      </div>
+
+      <div class="flex gap-3">
+        <a href="explore.html" class="btn btn-outline btn-sm" style="border-color: var(--color-border); color: #64748B; font-weight: 600; text-decoration: none;">
+          Cancel
+        </a>
+        <button type="button" class="btn btn-outline btn-sm" style="border-color: var(--color-border); color: #0F172A; font-weight: 700;">
+          Save Draft
+        </button>
+        <a href="listing-details.html" class="btn btn-primary btn-sm" style="font-weight: 800; text-decoration: none;">
+          Publish Listing →
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Mobile Bottom Nav -->
+  <div class="mobile-nav">
+    <a href="explore.html" class="mobile-nav-item">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+      <span>Explore</span>
+    </a>
+    <a href="reservation.html" class="mobile-nav-item">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+      <span>Collections</span>
+    </a>
+    <a href="analytics.html" class="mobile-nav-item">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>
+      <span>Impact</span>
+    </a>
+    <a href="profile.html" class="mobile-nav-item">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      <span>Profile</span>
+    </a>
+  </div>
+
+</body>
+</html>

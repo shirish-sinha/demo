@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join the Surplus Food Network – SurplusLink</title>
+  <meta name="description" content="Choose your role to get certified and start coordinating surplus food within minutes.">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .su-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 28px;
+      align-items: start;
+    }
+    .su-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      margin-bottom: 24px;
+    }
+    .role-select-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .role-card-radio {
+      display: none;
+    }
+    .role-select-card {
+      border: 1.5px solid var(--color-border);
+      border-radius: 12px;
+      padding: 20px;
+      cursor: pointer;
+      background: #FFFFFF;
+      transition: all 0.15s ease;
+      position: relative;
+      display: block;
+      user-select: none;
+    }
+    .role-select-card .role-check-indicator {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      color: #FFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.15s ease;
+    }
+    .role-card-radio:checked + .role-select-card {
+      border: 2px solid var(--color-primary);
+      background: #F8FAFC;
+    }
+    .role-card-radio:checked + .role-select-card .role-check-indicator {
+      opacity: 1;
+      visibility: visible;
+    }
+    .strength-meter {
+      height: 4px;
+      background: #E2E8F0;
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 6px;
+      margin-bottom: 6px;
+    }
+    .strength-meter-fill {
+      width: 85%;
+      height: 100%;
+      background: var(--color-primary);
+    }
+    @media (max-width: 960px) {
+      .su-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (max-width: 640px) {
+      .role-select-grid {
+        grid-template-columns: 1fr;
+      }
+      .su-card {
+        padding: 20px 16px;
+      }
+    }
+  </style>
+</head>
+<body style="background-color: var(--color-background);">
+
+  <!-- Header -->
+  <header style="background: #FFFFFF; border-bottom: 1px solid var(--color-border); padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+    <div>
+      <a href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 20px; color: var(--color-primary);">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="var(--color-primary)"/>
+          <path d="M2 17L12 22L22 17" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2 12L12 17L22 12" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        SurplusLink
+      </a>
+      <div style="font-size: 11px; color: #64748B; margin-top: 2px;">Civic Rescue & Food Diversion</div>
+    </div>
+    
+    <div style="display: flex; align-items: center; gap: 12px; font-size: 13px;">
+      <span style="color: #64748B;">Already part of the network?</span>
+      <a href="signin.html" class="btn btn-outline btn-sm" style="border-color: var(--color-border); color: #0F172A; font-weight: 700; text-decoration: none;">
+        Sign In
+      </a>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top: 32px; padding-bottom: 80px;">
+
+    <!-- Top Headline -->
+    <div style="margin-bottom: 28px;">
+      <span class="badge" style="background: #E8F5EF; color: #065F46; border: 1px solid #A7F3D0; font-weight: 700; font-size: 11px; margin-bottom: 10px;">
+        ✔ Official Civic Onboarding Portal
+      </span>
+      <h1 style="margin: 0 0 6px 0; font-size: 32px; font-weight: 800; color: #0F172A; letter-spacing: -0.5px;">
+        Join the Surplus Food Network
+      </h1>
+      <p class="text-muted" style="margin: 0; font-size: 15px;">
+        Choose your role to get certified and start coordinating surplus food within minutes.
+      </p>
+    </div>
+
+    <div class="su-layout">
+      
+      <!-- Left Form Steps -->
+      <div class="left-col">
+        
+        <!-- STEP 1 OF 2 -->
+        <div class="su-card">
+          <div class="flex justify-between items-center mb-3">
+            <span style="font-size: 11.5px; font-weight: 800; letter-spacing: 0.8px; color: var(--color-primary); text-transform: uppercase;">
+              STEP 1 OF 2
+            </span>
+            <span style="font-size: 12px; color: #64748B;">Select Account Type</span>
+          </div>
+
+          <h2 style="margin: 0 0 16px 0; font-size: 20px; font-weight: 800; color: #0F172A;">
+            Select your primary role
+          </h2>
+
+          <div class="role-select-grid">
+            <!-- Recipient Card (Active) -->
+            <input type="radio" name="account_role" id="role-recipient-card" class="role-card-radio" checked>
+            <label for="role-recipient-card" class="role-select-card">
+              <div class="flex justify-between items-start mb-3">
+                <div style="width: 36px; height: 36px; border-radius: 8px; background: #E8F5EF; color: #065F46; display: flex; align-items: center; justify-content: center; font-size: 18px;">
+                  🤲
+                </div>
+                <div class="role-check-indicator">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+              </div>
+
+              <div style="font-size: 15px; font-weight: 800; color: #0F172A; margin-bottom: 6px;">Food Recipient / Partner</div>
+              <p class="text-muted" style="margin: 0 0 14px 0; font-size: 12px; line-height: 1.45;">
+                For food banks, pantries, shelters, and civic volunteer teams rescuing surplus for immediate redistribution.
+              </p>
+
+              <div style="border-top: 1px solid var(--color-border); padding-top: 10px; font-size: 11.5px; color: #334155; line-height: 1.6;">
+                <div>✔ Free access to live surplus batches</div>
+                <div>✔ Automated hold guarantees</div>
+                <div>✔ Temperature logging certificates</div>
+              </div>
+            </label>
+
+            <!-- Provider Card -->
+            <input type="radio" name="account_role" id="role-provider-card" class="role-card-radio">
+            <label for="role-provider-card" class="role-select-card">
+              <div class="flex justify-between items-start mb-3">
+                <div style="width: 36px; height: 36px; border-radius: 8px; background: #F1F5F9; color: #334155; display: flex; align-items: center; justify-content: center; font-size: 18px;">
+                  🏪
+                </div>
+                <div class="role-check-indicator">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+              </div>
+
+              <div style="font-size: 15px; font-weight: 800; color: #0F172A; margin-bottom: 6px;">Food Provider / Donor</div>
+              <p class="text-muted" style="margin: 0 0 14px 0; font-size: 12px; line-height: 1.45;">
+                For restaurants, bakeries, cafes, grocers, and event venues looking to divert wholesome food from waste.
+              </p>
+
+              <div style="border-top: 1px solid var(--color-border); padding-top: 10px; font-size: 11.5px; color: #334155; line-height: 1.6;">
+                <div>✔ 3-step rapid listing workflow</div>
+                <div>✔ Good Samaritan liability shield</div>
+                <div>✔ Instant verified tax deduction logs</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- STEP 2 OF 2 -->
+        <div class="su-card">
+          <div class="flex justify-between items-center mb-3">
+            <span style="font-size: 11.5px; font-weight: 800; letter-spacing: 0.8px; color: var(--color-primary); text-transform: uppercase;">
+              STEP 2 OF 2
+            </span>
+            <span style="font-size: 12px; color: #64748B;">Registering as Community Partner</span>
+          </div>
+
+          <h2 style="margin: 0 0 20px 0; font-size: 20px; font-weight: 800; color: #0F172A;">
+            Organization & coordinator profile
+          </h2>
+
+          <form action="explore.html" method="get">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+              <div class="form-group">
+                <label class="form-label" style="font-size: 13px;">Organization / Pantry Name *</label>
+                <input type="text" class="form-input" value="Eastside Community Pantry" required>
+                <div style="font-size: 11px; color: #64748B; margin-top: 4px;">Official registered name or non-profit entity.</div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" style="font-size: 13px;">Sector Classification *</label>
+                <select class="form-input">
+                  <option selected>Community Food Pantry / Hub</option>
+                  <option>Emergency Homeless Shelter</option>
+                  <option>Soup Kitchen / Mutual Aid</option>
+                  <option>Youth & Senior Care Center</option>
+                </select>
+                <div style="font-size: 11px; color: #64748B; margin-top: 4px;">Determines distribution priority and tax log templates.</div>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+              <div class="form-group">
+                <label class="form-label" style="font-size: 13px;">Contact Person Full Name *</label>
+                <input type="text" class="form-input" value="Elena Rostova" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" style="font-size: 13px;">Role in Organization *</label>
+                <input type="text" class="form-input" value="Logistics Coordinator" required>
+              </div>
+            </div>
+
+            <div class="form-group mb-4">
+              <label class="form-label" style="font-size: 13px;">Official Email Address *</label>
+              <div style="position: relative;">
+                <span style="position: absolute; left: 12px; top: 12px; color: #64748B;">✉</span>
+                <input type="email" class="form-input" value="coord@eastsidepantry.org" style="padding-left: 36px;" required>
+              </div>
+              <div style="font-size: 11px; color: #64748B; margin-top: 4px;">Used for batch handoff codes and digital signature verification.</div>
+            </div>
+
+            <div class="form-group mb-4">
+              <label class="form-label" style="font-size: 13px;">Create Secure Password *</label>
+              <div style="position: relative;">
+                <span style="position: absolute; left: 12px; top: 12px; color: #64748B;">🔒</span>
+                <input type="password" class="form-input" value="RescueMission2025!@" style="padding-left: 36px; padding-right: 36px;" required>
+                <button type="button" style="position: absolute; right: 10px; top: 10px; background: none; border: none; cursor: pointer; color: #64748B;">👁</button>
+              </div>
+              <div class="strength-meter">
+                <div class="strength-meter-fill"></div>
+              </div>
+              <div class="flex justify-between" style="font-size: 11px; color: #64748B;">
+                <span style="color: #065F46; font-weight: 700;">● Strong (14+ characters, special symbols included)</span>
+                <span>Minimum 8 chars</span>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+              <div class="form-group">
+                <label class="form-label" style="font-size: 13px;">Primary Operational District *</label>
+                <select class="form-input">
+                  <option selected>📍 Civic Center & North Plaza</option>
+                  <option>📍 Eastside Industrial & Riverside</option>
+                  <option>📍 South Metro District</option>
+                  <option>📍 West University Corridor</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" style="font-size: 13px;">Alert Radius</label>
+                <select class="form-input">
+                  <option selected>Within 5.0 km</option>
+                  <option>Within 2.5 km</option>
+                  <option>Within 10.0 km</option>
+                  <option>Entire City Network</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Agreement Box -->
+            <div style="background: #F4FBF8; border: 1px solid #A7F3D0; border-radius: 8px; padding: 14px; display: flex; align-items: flex-start; gap: 10px; font-size: 12.5px; color: #065F46; margin-bottom: 20px;">
+              <input type="checkbox" id="terms" checked style="accent-color: var(--color-primary); width: 16px; height: 16px; margin-top: 2px;">
+              <label for="terms" style="cursor: pointer; line-height: 1.45;">
+                I agree to uphold the <strong>Civic Food Safety Charter</strong>, SurplusLink Temperature Verification Protocols, and respectful community handoff standards.
+              </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; font-weight: 800; padding: 14px; font-size: 14px; justify-content: center; margin-bottom: 12px;">
+              Create Verified Account →
+            </button>
+
+            <div class="text-muted text-center" style="font-size: 11.5px;">
+              By creating an account, you confirm adherence to local Good Samaritan Food Donation statutes.
+            </div>
+          </form>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Spotlight & Impact Cards -->
+      <div class="right-col">
+        
+        <!-- Spotlight Card -->
+        <div class="su-card" style="padding: 0; overflow: hidden;">
+          <div style="position: relative; height: 180px; background: #0F172A;">
+            <img src="assets/images/food_grain_bowls.png" alt="Spotlight Meals" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.9;">
+            <span class="badge" style="position: absolute; top: 12px; left: 12px; background: rgba(255,255,255,0.95); color: #065F46; font-weight: 800; font-size: 10.5px;">
+              ✔ Verified Provider Spotlight
+            </span>
+            <div style="position: absolute; bottom: 12px; left: 14px; right: 14px; color: #FFFFFF; font-size: 13.5px; font-weight: 800; text-shadow: 0 1px 4px rgba(0,0,0,0.8); line-height: 1.35;">
+              Fresh, temperature-controlled meals packaged daily for community distribution
+            </div>
+          </div>
+
+          <div style="padding: 18px;">
+            <div class="flex justify-between items-center mb-2">
+              <div class="flex items-center gap-1.5" style="font-weight: 800; font-size: 13.5px; color: #0F172A;">
+                The Green Kitchen ✔
+                <div style="font-size: 11px; color: #64748B; font-weight: 500;">Verified Provider Partner</div>
+              </div>
+              <span class="badge" style="background: #E8F5EF; color: #065F46; font-size: 10.5px; font-weight: 700;">
+                3,420 kg diverted
+              </span>
+            </div>
+
+            <p style="margin: 0; font-size: 12px; color: #475569; line-height: 1.45; font-style: italic;">
+              "SurplusLink removed every ounce of coordination friction. In under 8 minutes, surplus lunch batches from our banquet services are logged, reserved, and en route to families."
+            </p>
+          </div>
+        </div>
+
+        <!-- 2 Stats Side-by-side -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
+          <div style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: 10px; padding: 14px;">
+            <div class="flex justify-between items-center text-muted" style="font-size: 10.5px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 4px;">
+              EFFICIENCY
+              <span>⚡</span>
+            </div>
+            <div style="font-size: 24px; font-weight: 800; color: #0F172A; margin-bottom: 2px;">86.4%</div>
+            <div style="font-size: 11px; color: #065F46; font-weight: 600;">📈 Rescue efficiency rate</div>
+          </div>
+
+          <div style="background: #FFFFFF; border: 1px solid var(--color-border); border-radius: 10px; padding: 14px;">
+            <div class="flex justify-between items-center text-muted" style="font-size: 10.5px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 4px;">
+              WATER SAVED
+              <span>💧</span>
+            </div>
+            <div style="font-size: 24px; font-weight: 800; color: #0F172A; margin-bottom: 2px;">420k L</div>
+            <div style="font-size: 11px; color: #065F46; font-weight: 600;">🌱 Ecological savings</div>
+          </div>
+        </div>
+
+        <!-- Quote Card -->
+        <div class="su-card" style="padding: 16px; margin-bottom: 20px;">
+          <div class="flex items-start gap-3">
+            <div style="width: 28px; height: 28px; border-radius: 50%; background: #E8F5EF; color: var(--color-primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              🤍
+            </div>
+            <div>
+              <p style="margin: 0 0 6px 0; font-size: 12px; color: #334155; line-height: 1.45;">
+                "Automated hold guarantees gave our volunteer drivers certainty. No wasted trips, no uncertain batches. Just pure community care."
+              </p>
+              <div style="font-size: 11.5px; font-weight: 700; color: #0F172A;">
+                Elena Rostova • <span style="color: #64748B; font-weight: 500;">Eastside Pantry Network</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Legal & Liability Protection -->
+        <div style="background: #F4FBF8; border: 1px solid #A7F3D0; border-radius: 10px; padding: 16px; font-size: 12px; color: #065F46; line-height: 1.45;">
+          <div class="flex items-center gap-2 mb-2" style="font-weight: 800; font-size: 13px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            Legal & Liability Protection
+          </div>
+          <p style="margin: 0; color: #334155;">
+            All surplus food transfers logged on SurplusLink are shielded by federal and regional Good Samaritan Food Donation statutes, ensuring full civil immunity for wholesome food donations.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer style="background: #FFFFFF; border-top: 1px solid var(--color-border); padding: 20px 32px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #64748B; flex-wrap: wrap; gap: 12px;">
+    <div>© 2025 SurplusLink Civic Platform • Privacy Charter • Food Safety Manual • Emergency Protocol</div>
+    <div>● Rescue Network Operational • 42 hubs active</div>
+  </footer>
+
+</body>
+</html>

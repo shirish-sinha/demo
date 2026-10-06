@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipient Verification & Request – SurplusLink</title>
+  <meta name="description" content="Confirm your verified community recipient status and submit your pickup reservation.">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .v-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 24px;
+      align-items: start;
+    }
+    .v-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .step-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+    .step-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .step-badge-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      background: #E8F5EF;
+      color: var(--color-primary);
+      font-weight: 800;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .v-option-radio {
+      display: none;
+    }
+    .option-card {
+      border: 1.5px solid var(--color-border);
+      border-radius: 8px;
+      padding: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      transition: all 0.15s ease;
+      background: #FFFFFF;
+      user-select: none;
+    }
+    .v-option-radio:checked + .option-card,
+    .option-card.active {
+      border-color: var(--color-primary);
+      background: #F4FBF8;
+    }
+    .stepper-btn {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--color-border);
+      background: #F8FAFC;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    @media (max-width: 960px) {
+      .v-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body style="background-color: var(--color-background);">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="explore.html" class="nav-logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="var(--color-primary)"/>
+        <path d="M2 17L12 22L22 17" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M2 12L12 17L22 12" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      SurplusLink
+    </a>
+    <div class="nav-links">
+      <a href="explore.html" class="active">Explore food</a>
+      <a href="reservation.html">My collections</a>
+      <a href="analytics.html">Our impact</a>
+    </div>
+    <div class="nav-actions">
+      <a href="create-listing.html" class="btn btn-primary btn-sm">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        Share surplus
+      </a>
+      <a href="notifications.html" class="nav-icon-btn" title="Notifications">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+        <span class="unread-dot"></span>
+      </a>
+      <a href="profile.html" class="nav-avatar" title="View Profile">AM</a>
+    </div>
+  </nav>
+
+  <!-- Sub-nav Breadcrumbs & Countdown -->
+  <div style="background: #FFFFFF; border-bottom: 1px solid var(--color-border); padding: 12px 24px;">
+    <div class="container" style="padding: 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+      <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; flex-wrap: wrap;">
+        <a href="listing-details.html" style="color: var(--color-primary); font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 4px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          Back to Listing
+        </a>
+        <span style="color: var(--color-muted);">/</span>
+        <a href="explore.html" style="color: var(--color-muted); text-decoration: none;">Explore food</a>
+        <span style="color: var(--color-muted);">/</span>
+        <span style="color: var(--color-muted);">Bakery & Breads</span>
+        <span style="color: var(--color-muted);">/</span>
+        <span style="color: var(--color-muted);">Artisan Multigrain Sourdough</span>
+        <span style="color: var(--color-muted);">/</span>
+        <span style="font-weight: 700; color: #0F172A;">Request Form</span>
+      </div>
+
+      <div style="background: #FFF7ED; color: #C2410C; padding: 5px 14px; border-radius: 20px; border: 1px solid #FED7AA; font-size: 12.5px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+        <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #EA580C;"></span>
+        Expiry countdown: <strong style="color: #9A3412;">46m remaining</strong> to claim
+      </div>
+    </div>
+  </div>
+
+  <main class="container" style="padding-top: 24px; padding-bottom: 80px;">
+
+    <!-- Page Header -->
+    <div style="margin-bottom: 24px;">
+      <h1 style="margin: 0 0 6px 0; font-size: 26px; font-weight: 800; color: #0F172A;">Recipient Verification & Request</h1>
+      <p class="text-muted" style="margin: 0; font-size: 14px;">
+        Confirm your verified community recipient status and submit your pickup reservation before the surplus window closes.
+      </p>
+    </div>
+
+    <div class="v-layout">
+      
+      <!-- Left Form Steps -->
+      <div class="left-col">
+        
+        <!-- Organization Status Card -->
+        <div class="v-card" style="border-left: 4px solid var(--color-primary);">
+          <div class="flex justify-between items-start mb-3" style="flex-wrap: wrap; gap: 12px;">
+            <div class="flex items-center gap-3">
+              <div style="width: 36px; height: 36px; border-radius: 8px; background: #E8F5EF; color: var(--color-primary); display: flex; align-items: center; justify-content: center; font-size: 18px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h3 style="margin: 0; font-size: 16px; font-weight: 800; color: #0F172A;">Eastside Community Pantry & Shelter</h3>
+                  <span class="badge" style="background: #E8F5EF; color: #065F46; border: 1px solid #A7F3D0; font-weight: 700; font-size: 11px;">● Verified & Active</span>
+                </div>
+                <div class="text-muted" style="font-size: 12px; margin-top: 2px;">
+                  #REC-2024-8849 • Verified Hygiene & Handling Certified
+                </div>
+              </div>
+            </div>
+            <div style="text-align: right; font-size: 11.5px; color: #64748B;">
+              <div style="font-weight: 700; color: #0F172A;">Tier 1 Partner</div>
+              <div>Renewed Oct 2024</div>
+            </div>
+          </div>
+
+          <div style="background: #F4FBF8; border: 1px solid #A7F3D0; border-radius: 6px; padding: 10px 14px; display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: #065F46; font-weight: 600;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Your organization is authorized for <strong>instant reservation</strong> with The Green Kitchen. No pre-payment required.
+          </div>
+        </div>
+
+        <!-- Step 1: Recipient Type & Purpose -->
+        <div class="v-card">
+          <div class="step-header">
+            <div class="step-title-wrap">
+              <span class="step-badge-num">1</span>
+              <h2 style="margin: 0; font-size: 17px; font-weight: 800; color: #0F172A;">Recipient Type & Purpose</h2>
+            </div>
+            <span style="font-size: 12px; font-weight: 600; color: #64748B;">Step 1 of 4</span>
+          </div>
+
+          <div class="form-group mb-4">
+            <label class="form-label" style="font-size: 13px;">Recipient Category</label>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px;">
+              <input type="radio" name="v_category" id="cat-ngo" class="v-option-radio" checked>
+              <label for="cat-ngo" class="option-card">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2"><path d="M3 21h18"></path><path d="M5 21V7l8-4v18"></path><path d="M19 21V11l-6-4"></path></svg>
+                <div style="flex: 1; font-size: 13px; font-weight: 700; color: #0F172A;">NGO / Registered Charity</div>
+              </label>
+
+              <input type="radio" name="v_category" id="cat-comm" class="v-option-radio">
+              <label for="cat-comm" class="option-card">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                <div style="flex: 1; font-size: 13px; font-weight: 600; color: #334155;">Community Group</div>
+              </label>
+
+              <input type="radio" name="v_category" id="cat-indiv" class="v-option-radio">
+              <label for="cat-indiv" class="option-card">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <div style="flex: 1; font-size: 13px; font-weight: 600; color: #334155;">Individual in Need</div>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group mb-4">
+            <label class="form-label" style="font-size: 13px;">Intended Distribution & Impact Scope</label>
+            <input type="text" class="form-input" value="Evening community dinner distribution for 25 individuals">
+            <div style="font-size: 11.5px; color: #64748B; margin-top: 4px;">Shared with the donor to calculate collective food-waste redirection metrics.</div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div class="form-group">
+              <label class="form-label" style="font-size: 13px;">Primary Contact Name</label>
+              <input type="text" class="form-input" value="Sarah Jenkins">
+            </div>
+            <div class="form-group">
+              <label class="form-label" style="font-size: 13px;">Contact Phone Number</label>
+              <input type="text" class="form-input" value="+1 (555) 234-8901">
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Quantity & Fair Share Allocation -->
+        <div class="v-card">
+          <div class="step-header">
+            <div class="step-title-wrap">
+              <span class="step-badge-num">2</span>
+              <h2 style="margin: 0; font-size: 17px; font-weight: 800; color: #0F172A;">Quantity & Fair Share Allocation</h2>
+            </div>
+            <span style="font-size: 12px; font-weight: 600; color: #64748B;">Step 2 of 4</span>
+          </div>
+
+          <div style="background: #F8FAFC; border: 1px solid var(--color-border); border-radius: 8px; padding: 14px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <div style="font-size: 14.5px; font-weight: 800; color: #0F172A;">Artisan Multigrain Sourdough & Focaccia</div>
+              <div class="text-muted" style="font-size: 12px;">Offered by The Green Kitchen • Total available batch: 14 portions</div>
+            </div>
+            <span class="badge" style="background: #E8F5EF; color: #065F46; border: 1px solid #A7F3D0; font-weight: 700; font-size: 11px;">
+              📦 Max cap: 4 portions / recipient
+            </span>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <label class="form-label" style="font-size: 13px; margin: 0 0 2px 0;">Portions to reserve</label>
+              <div class="text-muted" style="font-size: 12px;">Requesting <strong>4 portions</strong> (approx. 2 loaves + 4 focaccia squares). Fair-share policy guarantees equal distribution.</div>
+            </div>
+            <div style="display: inline-flex; align-items: center; gap: 8px;">
+              <button type="button" class="stepper-btn">−</button>
+              <span style="font-size: 18px; font-weight: 800; padding: 0 12px; color: #0F172A;">4</span>
+              <button type="button" class="stepper-btn">+</button>
+            </div>
+          </div>
+
+          <div style="background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 8px; padding: 12px 14px; font-size: 12px; color: #9A3412; display: flex; gap: 8px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink: 0; margin-top: 1px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            <div>Allocating max allowance ensures multiple non-profits can benefit from this morning's bake surplus. Contact provider for special event exemptions.</div>
+          </div>
+        </div>
+
+        <!-- Step 3: Designated Collector Identification -->
+        <div class="v-card">
+          <div class="step-header">
+            <div class="step-title-wrap">
+              <span class="step-badge-num">3</span>
+              <h2 style="margin: 0; font-size: 17px; font-weight: 800; color: #0F172A;">Designated Collector Identification</h2>
+            </div>
+            <span style="font-size: 12px; font-weight: 600; color: #64748B;">Step 3 of 4</span>
+          </div>
+
+          <div class="form-group mb-4">
+            <label class="form-label" style="font-size: 13px;">Who will physically collect the surplus?</label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <input type="radio" name="v_collector" id="col-sarah" class="v-option-radio">
+              <label for="col-sarah" class="option-card">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <div style="flex: 1; font-size: 13px; font-weight: 600; color: #334155;">Sarah Jenkins (Account Holder)</div>
+              </label>
+
+              <input type="radio" name="v_collector" id="col-marcus" class="v-option-radio" checked>
+              <label for="col-marcus" class="option-card">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+                <div style="flex: 1; font-size: 13px; font-weight: 700; color: #0F172A;">Designated Volunteer / Staff</div>
+              </label>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+            <div class="form-group">
+              <label class="form-label" style="font-size: 13px;">Collector Full Name</label>
+              <input type="text" class="form-input" value="Marcus Vance">
+            </div>
+            <div class="form-group">
+              <label class="form-label" style="font-size: 13px;">Collector Phone Number</label>
+              <input type="text" class="form-input" value="+1 (555) 892-4412">
+            </div>
+          </div>
+
+          <div style="background: #F4FBF8; border: 1px solid #A7F3D0; border-radius: 8px; padding: 12px 14px; display: flex; align-items: center; gap: 10px; font-size: 12.5px; color: #065F46;">
+            <input type="checkbox" checked style="accent-color: var(--color-primary); width: 16px; height: 16px;">
+            <div>
+              <strong>ID Verification Agreement:</strong> Marcus Vance will present Volunteer ID badge <strong>#VOL-419</strong> alongside this confirmation screen upon arrival at the bakery counter.
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4: Pickup Logistics & Arrival -->
+        <div class="v-card">
+          <div class="step-header">
+            <div class="step-title-wrap">
+              <span class="step-badge-num">4</span>
+              <h2 style="margin: 0; font-size: 17px; font-weight: 800; color: #0F172A;">Pickup Logistics & Arrival</h2>
+            </div>
+            <span style="font-size: 12px; font-weight: 600; color: #64748B;">Step 4 of 4</span>
+          </div>
+
+          <div style="background: #F8FAFC; border: 1px solid var(--color-border); border-radius: 8px; padding: 14px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <div style="font-size: 14.5px; font-weight: 800; color: #0F172A;">The Green Kitchen • Side Bakery Counter</div>
+              <div class="text-muted" style="font-size: 12px;">24 Market Street, Suite B (Access via side alley)</div>
+            </div>
+            <div style="text-align: right;">
+              <span class="badge" style="background: #E8F5EF; color: #065F46; border: 1px solid #A7F3D0; font-weight: 700; font-size: 11px;">● Window Starts in 15 mins</span>
+              <div style="font-size: 11px; color: #64748B; margin-top: 2px;">Standard window: Today, 16:00 – 18:00</div>
+            </div>
+          </div>
+
+          <div class="form-group mb-4">
+            <label class="form-label" style="font-size: 13px;">Estimated Arrival Slot</label>
+            <select class="form-input">
+              <option selected>16:30 – 16:45 (Estimated arrival)</option>
+              <option>16:00 – 16:15</option>
+              <option>16:15 – 16:30</option>
+              <option>16:45 – 17:00</option>
+              <option>17:00 – 17:30</option>
+            </select>
+            <div style="font-size: 11.5px; color: #64748B; margin-top: 4px;">Please select an accurate window so the donor keeps bakery trays accessible.</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" style="font-size: 13px;">Special Pickup Notes / Handling Gear</label>
+            <textarea class="form-input" rows="2">Marcus will arrive with insulated bakery crates via side courtyard gate as requested.</textarea>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Request Summary -->
+      <div class="right-col">
+        
+        <!-- Summary Card -->
+        <div class="v-card">
+          <div class="flex justify-between items-center mb-4">
+            <h3 style="margin: 0; font-size: 16px; font-weight: 800; color: #0F172A;">Request Summary</h3>
+            <span class="badge" style="background: #FFF7ED; color: #C2410C; border: 1px solid #FED7AA; font-size: 11px; font-weight: 700;">🕒 Pending Submission</span>
+          </div>
+
+          <!-- Listing Mini Preview -->
+          <div style="display: flex; gap: 12px; background: #F8FAFC; border: 1px solid var(--color-border); border-radius: 8px; padding: 10px; margin-bottom: 16px;">
+            <img src="assets/images/food_sourdough.png" alt="Bread" style="width: 60px; height: 50px; object-fit: cover; border-radius: 6px;">
+            <div>
+              <div style="font-size: 11.5px; color: #64748B; font-weight: 600;">The Green Kitchen ✔</div>
+              <div style="font-weight: 700; font-size: 13px; color: #0F172A; margin-bottom: 2px;">Artisan Multigrain Sourdough</div>
+              <div class="text-muted" style="font-size: 11px;">📍 0.8 km • <span style="color: #C2410C; font-weight: 600;">⌛ Expires in 46m</span></div>
+            </div>
+          </div>
+
+          <!-- Specs List -->
+          <div style="border-top: 1px solid var(--color-border); padding-top: 12px; margin-bottom: 16px; font-size: 12.5px;">
+            <div class="flex justify-between mb-2">
+              <span class="text-muted">Verified Recipient</span>
+              <strong style="color: #0F172A;">Eastside Shelter (NGO)</strong>
+            </div>
+            <div class="flex justify-between mb-2">
+              <span class="text-muted">Requested Allocation</span>
+              <span class="badge" style="background: #E8F5EF; color: #065F46; font-size: 11px; font-weight: 700;">4 portions</span>
+            </div>
+            <div class="flex justify-between mb-2">
+              <span class="text-muted">Designated Collector</span>
+              <strong style="color: #0F172A;">Marcus Vance (Vol #419)</strong>
+            </div>
+            <div class="flex justify-between mb-2">
+              <span class="text-muted">Scheduled Pickup</span>
+              <strong style="color: #0F172A;">Today, 16:30 – 16:45</strong>
+            </div>
+            <div class="flex justify-between pt-2" style="border-top: 1px dashed var(--color-border);">
+              <span class="text-muted">Reservation Fee</span>
+              <strong style="color: var(--color-primary); font-size: 13.5px;">Free Community Rescue ($0.00)</strong>
+            </div>
+          </div>
+
+          <!-- Auto approval note -->
+          <div style="background: #F4FBF8; border: 1px solid #A7F3D0; border-radius: 8px; padding: 12px; font-size: 12px; color: #065F46; margin-bottom: 16px; line-height: 1.4;">
+            🕒 <strong>Once submitted, The Green Kitchen</strong> has 15 minutes to confirm. Because of your Tier 1 status, auto-approval triggers if unacknowledged.
+          </div>
+
+          <!-- CTA Buttons -->
+          <a href="reservation.html" class="btn btn-secondary" style="width: 100%; background: #0F172A; color: #FFF; font-weight: 800; padding: 12px; text-decoration: none; justify-content: center; margin-bottom: 8px; font-size: 14px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Submit Pickup Request
+          </a>
+          <a href="listing-details.html" class="btn btn-outline" style="width: 100%; border-color: var(--color-border); color: #334155; font-weight: 600; text-decoration: none; justify-content: center; font-size: 13px; margin-bottom: 16px;">
+            Back to Listing
+          </a>
+
+          <!-- Checklist -->
+          <div style="font-size: 12px; color: #334155; line-height: 1.6;">
+            <div class="flex items-center gap-2 mb-1">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              No payment required — 100% free surplus rescue
+            </div>
+            <div class="flex items-center gap-2 mb-1">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              30-minute hold guaranteed upon confirmation
+            </div>
+            <div class="flex items-center gap-2 mb-2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Zero-waste impact: 4 meals diverted from landfill
+            </div>
+            <div class="text-muted text-center" style="font-size: 11px; margin-top: 10px; border-top: 1px solid var(--color-border); padding-top: 8px;">
+              🛡 Compliant with Community Food Safety Directive 2024
+            </div>
+          </div>
+        </div>
+
+        <!-- Hygiene Protocol -->
+        <div style="background: #F4FBF8; border: 1px solid #A7F3D0; border-radius: 10px; padding: 16px; font-size: 12.5px; color: #0F172A; line-height: 1.45;">
+          <div class="flex items-center gap-2 mb-2" style="font-weight: 800; color: #065F46;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+            Recipient Hygiene Protocol
+          </div>
+          <p style="margin: 0 0 10px 0; color: #334155; font-size: 12px;">
+            All collectors must bring clean, food-safe containers for transit and follow provider contactless handover procedures.
+          </p>
+          <a href="#" style="color: var(--color-primary); font-weight: 700; text-decoration: none; font-size: 12px; display: inline-flex; align-items: center; gap: 4px;">
+            View safety guidelines →
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer style="background: #FFFFFF; border-top: 1px solid var(--color-border); padding: 24px 0; margin-top: 40px;">
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-size: 12.5px; color: var(--color-muted);">
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="var(--color-primary)" stroke-width="2"/></svg>
+        <strong style="color: #0F172A;">SurplusLink</strong> — Rescuing surplus food with speed and dignity
+      </div>
+      <div style="display: flex; gap: 20px;">
+        <a href="#" style="color: var(--color-muted); text-decoration: none;">Food Safety Charter</a>
+        <a href="#" style="color: var(--color-muted); text-decoration: none;">Fair Share Guidelines</a>
+        <a href="#" style="color: var(--color-muted); text-decoration: none;">Provider Portal</a>
+        <a href="#" style="color: var(--color-muted); text-decoration: none;">Help Center</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Mobile Bottom Nav -->
+  <div class="mobile-nav">
+    <a href="explore.html" class="mobile-nav-item active">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+      <span>Explore</span>
+    </a>
+    <a href="reservation.html" class="mobile-nav-item">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+      <span>Collections</span>
+    </a>
+    <a href="analytics.html" class="mobile-nav-item">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>
+      <span>Impact</span>
+    </a>
+    <a href="profile.html" class="mobile-nav-item">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      <span>Profile</span>
+    </a>
+  </div>
+
+</body>
+</html>
